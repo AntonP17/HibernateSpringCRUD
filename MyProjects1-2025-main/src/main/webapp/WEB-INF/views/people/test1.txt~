@@ -1,0 +1,103 @@
+@PostMapping()
+public String create(@RequestParam("name") String name,
+    @RequestParam("age") int age,
+    @RequestParam("email") String email,
+    Model model) {
+
+Person person = new Person();
+
+person.setName(name);
+person.setAge(age);
+person.setEmail(email);
+
+model.addAttribute("person", person);
+
+return "successPage";
+
+}
+
+МЕТОД SAVE , запрос SQL
+String SQL = "INSERT INTO Person VALUES(" + 1 + ",'" + person.getName()  +
+            "'," + person.getAge() + ",'" + person.getEmail() + "')"; // так писать нежелательно во избежание SQL инъекции
+            // (у нас пользователь может сломать приложение)
+
+            // INSERT INTO Person VALUES(1,'Tom', 18, 'tom@ya.ru')
+
+// SQL команды , БАЗОВЫЙ ПОРЯДОК ВЫПОЛНЕНИЯ SQL-ЗАПРОСОВ НИЖЕ
+create table Person(
+    id int, // SERIAL PRIMARY KEY указывает что это первичный ключ уникальный
+    name varchar,
+    age int,
+    email varchar
+) SQL команда дял создания таблицы
+
+добвить ограничения в уже сущ таблицу
+ALTER TABLE Person
+ALTER COLLUMN name SET NOT NULL; // для колонки имя , установить ограничение , удаить ограничение DROP
+
+внешний ключ = FOREIGN KEY, таблица person в ней первичный ключ id, таблица book внешний ключ person_id
+(это и есть ссылка на первичный ключ табоицы person) = отношение один ко многим
+person_id REFERENCES Person(id) // сама команда в таблице book
+
+многие к многим = у нас таблица студенты , таблица класс и тертья таблица связывающая между ними
+у нее колонка id студента и id класса (вот и все это и есть данное отношение)
+
+один к одному = таблица человек и таблица в которой содержится только одна характеристика (например паспорт)
+которая ссылается на конкретный id человека
+
+ограничения для таблицы :
+NOT NULL - поле не может быть пустым
+UNIQUE - поле должно быть уникальным
+PRIMARY KEY - поле будет первичным ключом
+FOREIGN KEY - поле будет ссылкой на другую таблицу ( person_id INT REFERENCES Person(id), -- Внешний ключ, ссылающийся на таблицу Person)
+CHECK - проверяет условие ( age INT CHECK (age >= 0), -- Возраст должен быть неотрицательным)
+ DEFAULT 18, -- Если возраст не указан, по умолчанию будет 18
+
+drop table Person; SQL команда дял удаления таблицы
+
+delete from person; SQL команда дял очистки таблицы (удаление всех данных)
+
+insert into person(тут можно указать колонки куда втсавить данные ,
+либо просто в values сразу во все) values(1, 'Tom', 18, 'tom@ya.ru'); SQL команда дял вставки данных
+
+DELETE FROM Person WHERE id = 1; SQL команда дял удаления данных по ключу
+
+UPDATE Person SET name = 'Tom' WHERE id = 1; SQL команда дял обновления данных
+
+SELECT * FROM Person; SQL команда дял выборки данных
+
+JOIN - основной синтаксис
+
+SELECT столбцы
+FROM таблица1
+TMT_JOIN таблица2
+    ON условие_соединения
+WHERE условие_фильтрации
+GROUP BY столбцы_rpyrnпировки
+HAVING условие_фильтрации_rpyrnпировки
+ORDER BY столбцы_copтировки;
+
+Добавление соединения с таблицами
+Тип JOIN	Результат
+INNER JOIN	Только совпадающие строки из обеих таблиц.
+LEFT JOIN	Все строки из левой таблицы и совпадающие строки из правой таблицы.
+RIGHT JOIN	Все строки из правой таблицы и совпадающие строки из левой таблицы.
+FULL JOIN	Все строки из обеих таблиц, с NULL для отсутствующих совпадений.
+
+Порядок выполнения SQL-запроса
+SQL выполняет запросы не в том порядке, в котором они написаны, а в следующем:
+FROM: Определяет основную таблицу.
+JOIN: Добавляет и соединяет другие таблицы.
+WHERE: Фильтрует строки.
+GROUP BY: Группирует строки.
+HAVING: Фильтрует группы.
+SELECT: Выбирает столбцы.
+ORDER BY: Сортирует результат.
+
+ИНДЕКСЫ
+для первичного ключа авто , для внешнего :
+CREATE INDEX index_name ON table_name (column_name);
+
+КАСКАДИРОВАНИЕ
+Если первичный ключ родительской таблицы удаляется , то и удаляется связанные внешние ключи
+Если обновляется то так же

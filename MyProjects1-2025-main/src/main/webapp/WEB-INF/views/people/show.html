@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Человек</title>
+</head>
+<body>
+
+<p th:text="${person.getName()}">VALUE</p>
+<p th:text="${person.getId()}">VALUE </p>
+<p th:text="${person.getAge()}">VALUE</p>
+<p th:text="${person.getEmail()}">VALUE</p>
+<br/>
+<hr/>
+<!-- вот тут кнопка для редактирования , происходит переход на страницу для редактирования конкретнго человека-->
+<a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}"> <!-- происходит переход на страницу удаления конкретнго человека по id-->
+    <input type="submit" value="Delete!"/> <!-- при нажатии этой кнопки происходит перехд по адресу выше и все -->
+
+</form>
+</body>
+</html>
