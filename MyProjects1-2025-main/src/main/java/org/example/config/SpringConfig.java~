@@ -90,7 +90,7 @@ public class SpringConfig implements WebMvcConfigurer {
         return new JdbcTemplate(dateSource());
     }
 
-    // диалект Hibernate
+    // диалект
     private Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
