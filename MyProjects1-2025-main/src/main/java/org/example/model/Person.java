@@ -1,15 +1,19 @@
 package org.example.model;
 
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
 
 @Entity
 @Table(name = "Person")
+@NamedQuery( // кастомный запрос к БД используем в репозитории ->
+        name = "User.findByEmail",
+        query = "SELECT u FROM Person u WHERE u.email = :email"
+)
 public class Person {
 
     @Id

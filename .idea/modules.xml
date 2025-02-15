@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/MyProjects1-2025-main/CRUD.iml" filepath="$PROJECT_DIR$/MyProjects1-2025-main/CRUD.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/CRUDHibernate.iml" filepath="$PROJECT_DIR$/.idea/CRUDHibernate.iml" />
     </modules>
   </component>

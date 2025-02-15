@@ -3,6 +3,7 @@ package org.example.controllers;
 import jakarta.validation.Valid;
 import org.example.dao.PersonDAO;
 import org.example.model.Person;
+import org.example.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,24 +16,26 @@ import java.util.List;
 @RequestMapping("/people")
 public class PeopleController {
 
-    private final PersonDAO personDAO;
+    private final PersonService personService;
 
     @Autowired
-    public PeopleController(PersonDAO personDAO) {
-        this.personDAO = personDAO;
+    public PeopleController(PersonService personService) {
+        this.personService = personService;
     }
+
+
     // гет запрос для отображения людей
     @GetMapping()
     public String index(Model model) {
-        // получим вех людей из DAO и передаем в представление
-        model.addAttribute("people", personDAO.index());
+        // получим вех людей из сервиса и передаем в представление
+        model.addAttribute("people", personService.getAllPerson());
         return "people/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        // получаем 1 чела по id из dao и передаем в представление
-        model.addAttribute("person", personDAO.show(id));
+        // получаем 1 чела по id из сервиса и передаем в представление
+        model.addAttribute("person", personService.findById(id));
         return "people/show";
     }
 
@@ -53,7 +56,7 @@ public class PeopleController {
         if (bindingResult.hasErrors())
             return "people/new";
 
-        personDAO.save(person);
+        personService.save(person);
         return "redirect:/people";
 
     }
@@ -63,7 +66,7 @@ public class PeopleController {
     @GetMapping("/{id}/edit")
     public String edit(Model model,@PathVariable("id") int id) {
 
-        model.addAttribute("person", personDAO.show(id));
+        model.addAttribute("person", personService.findById(id));
         return "people/edit";
     }
     // тут естественно Path запрос для редактирование (как POst только тут не добавляет человека в спикок а меняет уже существующего человека)
@@ -76,13 +79,13 @@ public class PeopleController {
         if (bindingResult.hasErrors())
             return "people/edit";
 
-        personDAO.update(id, person);
+        personService.update(id, person);
         return "redirect:/people";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        personDAO.delete(id);
+        personService.delete(id);
         return "redirect:/people";
     }
 }
